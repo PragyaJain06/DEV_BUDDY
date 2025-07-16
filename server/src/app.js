@@ -11,7 +11,7 @@ const cors = require("cors");
 const app = express();
 app.use(
   cors({
-    origin: "https://dev-buddy-six.vercel.app",
+    origin: "https://dev-buddy-ygo4.vercel.app/",
     credentials: true,
   })
 );
