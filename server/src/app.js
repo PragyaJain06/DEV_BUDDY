@@ -9,10 +9,11 @@ const userRoute = require("./routes/user");
 require("dotenv").config();
 const cors = require("cors");
 const app = express();
-app.use(cors({
-    origin: ["https://dev-buddy-full.vercel.app", "http://localhost:5173"], // Add dev URL
+app.options("*", cors({
+    origin: ["https://dev-buddy-full.vercel.app", "http://localhost:5173"],
     credentials: true,
 }));
+
 
 app.use(express.json());
 app.use(cookieParser());
