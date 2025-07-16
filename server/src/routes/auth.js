@@ -3,6 +3,10 @@ const { validateSignUpData } = require("../utils/validation");
 const authRoute = express.Router();
 const bcrypt = require("bcrypt");
 const UserModel = require("../model/user");
+authRoute.get("/", (req, res) => {
+  res.status(200).send("Server is healthy ✅");
+});
+
 authRoute.post("/signup", async (req, res) => {
   try {
     validateSignUpData(req.body);
