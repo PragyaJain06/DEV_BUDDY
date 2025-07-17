@@ -33,10 +33,12 @@ authRoute.post("/login", async (req, res) => {
     const isPasswordValid = await user.validatePassword(password);
     if (isPasswordValid) {
       let token = await user.getJwt();
-      res.cookie("token", token, {
-        expires: new Date(Date.now() + 8 * 3600000),
-        httpOnly: true,
-      });
+res.cookie("token", token, {
+  httpOnly: true,
+  secure: true, // true in production
+  sameSite: "None", // allow cross-site cookies
+});
+
       res.json({
         message: "Login Successful!",
         data: user,
