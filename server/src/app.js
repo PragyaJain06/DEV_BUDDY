@@ -36,14 +36,13 @@
 //     console.log(err);
 //   });
 
-
 require("dotenv").config();
-
 const express = require("express");
 const connectToDb = require("./config/database");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
+// Routes
 const authRoute = require("./routes/auth");
 const profileRoute = require("./routes/profile");
 const requestRouter = require("./routes/request");
@@ -70,10 +69,10 @@ app.use("/profile", profileRoute);
 app.use("/request", requestRouter);
 app.use("/user", userRoute);
 
-// ✅ Connect to DB (only once)
+// ✅ Connect to DB
 connectToDb()
   .then(() => console.log("DB connected successfully"))
   .catch((err) => console.error("DB connection failed:", err));
 
-// ✅ Export app for Vercel
 module.exports = app;
+
