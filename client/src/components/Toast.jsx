@@ -1,6 +1,6 @@
 export default function Toast({ msg, status }) {
   return (
-    <div className="toast toast-top toast-end">
+    <div className="toast toast-top toast-end z-100">
       <div
         className={
           status === "err"
