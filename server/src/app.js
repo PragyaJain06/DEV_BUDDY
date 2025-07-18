@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const connectToDb = require("./config/database");
 
@@ -6,7 +8,6 @@ const authRoute = require("./routes/auth");
 const profileRoute = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRoute = require("./routes/user");
-require("dotenv").config();
 const cors = require("cors");
 const app = express();
 // Apply CORS to all requests, not just OPTIONS
