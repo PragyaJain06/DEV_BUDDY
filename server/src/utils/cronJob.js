@@ -21,13 +21,17 @@ async function processPendingRequests() {
     ];
 
     for (let email of listOfEmails) {
-      await sendEmail(email, "Someone is interested in you", `You have pending requests pending.`);
+      await sendEmail(
+        email,
+        "Someone is interested in you",
+        `You have pending requests pending.`
+      );
     }
 
-    return listOfEmails.length;
+    return listOfEmails.length; 
   } catch (e) {
-    console.error("Error in processPendingRequests:", e);
-    return 0;
+    console.error(e);
+    throw e;
   }
 }
 
