@@ -5,15 +5,13 @@
       "src": "vite.config.js",
       "use": "@vercel/static-build",
       "config": { "distDir": "dist" }
-    },
-    {
-      "src": "src/cron.js",
-      "use": "@vercel/node"
     }
   ],
   "routes": [
-    { "src": "/api/cron", "dest": "/src/cron.js" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    { 
+      "src": "/(.*)", 
+      "dest": "/index.html" 
+    }
   ],
   "crons": [
     { 
