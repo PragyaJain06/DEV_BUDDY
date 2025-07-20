@@ -49,7 +49,6 @@ const requestRouter = require("./routes/request");
 const userRoute = require("./routes/user");
 
 const app = express();
-require("./utils/cronJob");
 
 // ✅ CORS
 app.use(
