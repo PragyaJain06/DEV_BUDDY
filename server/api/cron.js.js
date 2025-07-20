@@ -1,39 +1,39 @@
-require("dotenv").config();
-const express = require("express");
-const connectToDb = require("./config/database");
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-require("./utils/cronJob");
-// Routes
-const authRoute = require("./routes/auth");
-const profileRoute = require("./routes/profile");
-const requestRouter = require("./routes/request");
-const userRoute = require("./routes/user");
+const connectToDb = require("../src/config/database");
+const { processPendingRequests } = require("../src/utils/cronJobs");
 
-const app = express();
+// ✅ Force dynamic execution (prevents caching issues)
+export const dynamic = 'force-dynamic';
 
-// ✅ CORS
-app.use(
-  cors({
-    origin: ["https://dev-buddy-full.vercel.app", "http://localhost:5173"],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+export default async function handler(req, res) {
+  // ✅ Only allow GET requests for cron jobs
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-app.use(express.json());
-app.use(cookieParser());
-
-// ✅ Routes
-app.use("/", authRoute);
-app.use("/profile", profileRoute);
-app.use("/request", requestRouter);
-app.use("/user", userRoute);
-
-// ✅ Connect to DB
-connectToDb()
-  .then(() => console.log("DB connected successfully"))
-  .catch((err) => console.error("DB connection failed:", err));
-
-module.exports = app;
+  try {
+    console.log("🔄 Cron job started at:", new Date().toISOString());
+    
+    // Connect to database
+    await connectToDb();
+    console.log("✅ Database connected");
+    
+    // Process pending requests
+    const count = await processPendingRequests();
+    console.log(`✅ Cron job completed. Emails sent: ${count}`);
+    
+    return res.status(200).json({ 
+      success: true,
+      message: "Cron job executed successfully", 
+      emailsSent: count,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error("❌ Cron job failed:", error);
+    return res.status(500).json({ 
+      success: false,
+      error: "Cron job failed", 
+      details: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+}
