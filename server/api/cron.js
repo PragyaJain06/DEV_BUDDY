@@ -8,26 +8,16 @@ module.exports = async (req, res) => {
 
   try {
     console.log("🔄 Cron job started at:", new Date().toISOString());
-
     await connectToDb();
-    console.log("✅ Database connected");
-
     const count = await processPendingRequests();
-    console.log(`✅ Cron job completed. Emails sent: ${count}`);
 
     return res.status(200).json({
       success: true,
       message: "Cron job executed successfully",
-      emailsSent: count,
-      timestamp: new Date().toISOString(),
+      emailsSent: count
     });
   } catch (error) {
     console.error("❌ Cron job failed:", error);
-    return res.status(500).json({
-      success: false,
-      error: "Cron job failed",
-      details: error.message,
-      timestamp: new Date().toISOString(),
-    });
+    return res.status(500).json({ error: error.message });
   }
 };
